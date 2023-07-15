@@ -12,7 +12,7 @@ import Input from './components/Input';
 import { Configuration, OpenAIApi } from "openai";
 
 let configuration = new Configuration({
-  apiKey: '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',//process.env.OPENAI_API_KEY_SCALE_HACKDAY,
+  apiKey: 
 });
 delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
@@ -37,10 +37,12 @@ const App = () => {
         temperature: 0.8,
       });
       const { choices } = response.data;
-      setChat((prevChat) => [...prevChat, { message: choices[0].message.content, sender: 'assistant' }]);
+      const message = choices[0].message.content;
+      setChat((prevChat) => [...prevChat, { message: message, sender: 'assistant' }]);
+      setNumMessages(numMessages + 1);
       
       // Check if the user won
-      if (response.includes('you won')) {
+      if (message.includes('you won')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
