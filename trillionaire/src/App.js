@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Container, CssBaseline } from '@mui/material';
+import { Box, Divider } from '@mui/material';
+import Header from './components/Header';
 import Chatbox from './components/Chatbox';
 import Input from './components/Input';
 import { Configuration, OpenAIApi } from "openai";
@@ -11,7 +12,7 @@ delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
 console.log(openai);
 
-function App() {
+const App = () => {
   const [chat, setChat] = useState([]);
 
   const handleSend = async (message) => {
@@ -34,22 +35,13 @@ function App() {
   };
 
   return (
-    <Container>
-      <CssBaseline />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        <Chatbox chat={chat} />
-        <Input onSend={handleSend} />
-      </Box>
-    </Container>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#242525', height: '100%', width: '100%', position: 'absolute' }}>
+      <Header />
+      <Chatbox chat={chat} />
+      <Divider sx={{ height: '2px', bgcolor: 'primary.main' }} />
+      <Input onSend={handleSend} />
+    </Box>
   );
-}
+};
 
 export default App;
