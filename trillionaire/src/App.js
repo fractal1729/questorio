@@ -43,7 +43,7 @@ const App = () => {
       setNumMessages(numMessages + 1);
       
       // Check if the user won
-      if (gptMessage.includes('you won')) {
+      if (gptMessage.toLowerCase().includes('you won') || gptMessage.toLowerCase().includes('you have won')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
