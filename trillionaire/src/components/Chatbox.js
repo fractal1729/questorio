@@ -14,7 +14,7 @@ const Chatbox = ({ chat }) => {
   }, [chat]);
 
   return (
-    <Box sx={{ height: '60%', width: '50%', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', p: 1, bgcolor: '#242525' }}>
+    <Box sx={{ width: '50%', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', p: 1, bgcolor: '#242525', marginTop: 'auto'}}>
       {chat.map((message, index) => (
         <Message key={index} message={message.message} sender={message.sender} />
       ))}

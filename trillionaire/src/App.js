@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import Header from './components/Header';
 import Chatbox from './components/Chatbox';
 import Input from './components/Input';
@@ -12,9 +12,10 @@ const App = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', alignItems: 'center', bgcolor: '#242525' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#242525', height: '100%', width: '100%', position: 'absolute' }}>
       <Header />
       <Chatbox chat={chat} />
+      <Divider sx={{ height: '2px', bgcolor: 'primary.main' }} />
       <Input onSend={handleSend} />
     </Box>
   );

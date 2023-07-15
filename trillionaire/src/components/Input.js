@@ -1,3 +1,4 @@
+// Input.js
 import React, { useState } from 'react';
 import { Box, TextField, IconButton, Grid } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
@@ -20,11 +21,10 @@ const Input = ({ onSend }) => {
     <Box 
       component="form" 
       onSubmit={handleSend} 
-      sx={{ 
-        position: 'fixed', 
+      sx={{  
         bottom: 0, 
         width: '50%', 
-        display: 'flex', 
+        display: 'flex',
         justifyContent: 'center', 
         gap: '10px', 
         p: 1, 
@@ -36,11 +36,25 @@ const Input = ({ onSend }) => {
           <TextField 
             value={message} 
             onChange={e => setMessage(e.target.value)} 
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend(e);
+              }
+            }}
             multiline 
             rowsMax={4} 
             variant="outlined" 
             fullWidth 
-            sx={{ color: '#fff' }}
+            sx={{ 
+              color: '#fff', 
+              '& .MuiOutlinedInput-input': {
+                color: '#fff'
+              },
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '15px',
+              },
+            }}
           />
         </Grid>
         <Grid item xs={2}>
