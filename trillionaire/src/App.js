@@ -31,13 +31,13 @@ const App = () => {
       const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
-          {"role": "system", "content": "You are a helpful assistant."},
-          {"role": "user", "content": message},
+          {role: "system", content: "You are a helpful assistant."},
+          ...chat.map((message) => ({ role: message.sender, content: message.message })),
         ],
         temperature: 0.8,
       });
       const { choices } = response.data;
-      setChat((prevChat) => [...prevChat, { message: choices[0].message.content, sender: 'bot' }]);
+      setChat((prevChat) => [...prevChat, { message: choices[0].message.content, sender: 'assistant' }]);
     }
     catch (e) {
       console.error(e);
