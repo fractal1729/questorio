@@ -24,24 +24,27 @@ const App = () => {
   const [won, setWon] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
-  const handleSend = async (message) => {
-    setChat([...chat, { message, sender: 'user' }]);
+  const handleSend = async (userMessage) => {
+    const updatedChat = [...chat, { message: userMessage, sender: 'user' }];
+    setChat(updatedChat);
     try {
+      console.log(updatedChat);
       const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [
           {role: "system", content: "You are a helpful assistant."},
-          ...chat.map((message) => ({ role: message.sender, content: message.message })),
+          ...updatedChat.map((message) => ({ role: message.sender, content: message.message })),
         ],
         temperature: 0.8,
       });
+      console.log(response);
       const { choices } = response.data;
-      const message = choices[0].message.content;
-      setChat((prevChat) => [...prevChat, { message: message, sender: 'assistant' }]);
+      const gptMessage = choices[0].message.content;
+      setChat([...updatedChat, { message: gptMessage, sender: 'assistant' }]);
       setNumMessages(numMessages + 1);
       
       // Check if the user won
-      if (message.includes('you won')) {
+      if (gptMessage.includes('you won')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
@@ -51,7 +54,6 @@ const App = () => {
       console.error(e);
     }
   };
-  console.log(chat);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#242525', height: '100%', width: '100%', position: 'absolute' }}>
