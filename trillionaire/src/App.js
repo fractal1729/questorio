@@ -12,7 +12,7 @@ import Input from './components/Input';
 import { Configuration, OpenAIApi } from "openai";
 
 let configuration = new Configuration({
-  apiKey: 
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
 });
 delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
