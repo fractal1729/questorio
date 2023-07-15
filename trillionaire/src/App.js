@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 
 import { Box, Divider } from '@mui/material';
@@ -24,22 +24,21 @@ const App = () => {
   const [won, setWon] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  useEffect(() => {
+    const init = async () => {
+      const initialMessage = await getCompletion([]);
+      setChat([
+        { message: initialMessage, sender: 'assistant' },
+      ]);
+    };
+    init();
+  }, []);
+
   const handleSend = async (userMessage) => {
     const updatedChat = [...chat, { message: userMessage, sender: 'user' }];
     setChat(updatedChat);
     try {
-      console.log(updatedChat);
-      const response = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {role: "system", content: "You are a helpful assistant."},
-          ...updatedChat.map((message) => ({ role: message.sender, content: message.message })),
-        ],
-        temperature: 0.8,
-      });
-      console.log(response);
-      const { choices } = response.data;
-      const gptMessage = choices[0].message.content;
+      const gptMessage = await getCompletion(updatedChat);
       setChat([...updatedChat, { message: gptMessage, sender: 'assistant' }]);
       setNumMessages(numMessages + 1);
       
@@ -69,5 +68,20 @@ const App = () => {
     </Box>
   );
 };
+
+async function getCompletion(chat) {
+  console.log(chat);
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "Your task is to run a text adventure for the user. The user will be able to type in commands to interact with the world. The user wins if they get to the end of the game. The user loses if they die. The user can also type in 'help' to get a list of commands."},
+      ...chat.map((message) => ({ role: message.sender, content: message.message })),
+    ],
+    temperature: 0.8,
+  });
+  console.log(response);
+  const { choices } = response.data;
+  return choices[0].message.content;
+}
 
 export default App;
