@@ -1,10 +1,13 @@
 import React from 'react';
+import { Typography, Box } from '@mui/material';
 
 const Message = ({ message, sender }) => {
   return (
-    <div className={sender}>
-      <p>{message}</p>
-    </div>
+    <Box sx={{ alignSelf: sender === 'bot' ? 'flex-start' : 'flex-end' }}>
+      <Typography variant="body1" gutterBottom>
+        {message}
+      </Typography>
+    </Box>
   );
 };
 

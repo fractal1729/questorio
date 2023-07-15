@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Box, Container, CssBaseline } from '@mui/material';
 import Chatbox from './components/Chatbox';
 import Input from './components/Input';
 
@@ -7,17 +8,27 @@ function App() {
 
   const handleSend = (message) => {
     setChat([...chat, { message, sender: 'user' }]);
-    // API call to OpenAI should be made here, replacing the setTimeout function
     setTimeout(() => {
       setChat((prevChat) => [...prevChat, { message: 'I am a bot', sender: 'bot' }]);
     }, 1000);
   };
 
   return (
-    <div className="App">
-      <Chatbox chat={chat} />
-      <Input onSend={handleSend} />
-    </div>
+    <Container>
+      <CssBaseline />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+        }}
+      >
+        <Chatbox chat={chat} />
+        <Input onSend={handleSend} />
+      </Box>
+    </Container>
   );
 }
 
