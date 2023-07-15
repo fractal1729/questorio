@@ -9,6 +9,14 @@ import DialogContent from '@mui/material/DialogContent';
 import Header from './components/Header';
 import Chatbox from './components/Chatbox';
 import Input from './components/Input';
+import { Configuration, OpenAIApi } from "openai";
+
+let configuration = new Configuration({
+  apiKey: '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',//process.env.OPENAI_API_KEY_SCALE_HACKDAY,
+});
+delete configuration.baseOptions.headers['User-Agent'];
+const openai = new OpenAIApi(configuration);
+console.log(openai);
 
 const App = () => {
   const [chat, setChat] = useState([]);
@@ -17,14 +25,22 @@ const App = () => {
   const [showConfetti, setShowConfetti] = useState(false);
 
 
-  const handleSend = (message) => {
-    setChat([...chat, { message, sender: 'user' }, { message: 'This is an automated message', sender: 'bot' }]);
-
-    // Check if the user won
-    if (botMessage.includes('you won')) {
-      setWon(true);
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
+  const handleSend = async (message) => {
+    setChat([...chat, { message, sender: 'user' }]);
+    try {
+      const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": message},
+        ],
+        temperature: 0.8,
+      });
+      const { choices } = response.data;
+      setChat((prevChat) => [...prevChat, { message: choices[0].message.content, sender: 'bot' }]);
+    }
+    catch (e) {
+      console.error(e);
     }
   };
 

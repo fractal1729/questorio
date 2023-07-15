@@ -5,16 +5,20 @@ import { Send as SendIcon } from '@mui/icons-material';
 
 const Input = ({ onSend }) => {
   const [message, setMessage] = useState('');
+  const [fetching, setFetching] = useState(false);
 
-  const handleSend = (event) => {
+  const handleSend = async (event) => {
+    // Prevent the form from refreshing the page on submit
     event.preventDefault();
 
     if (!message.trim()) {
       return;
     }
 
-    onSend(message);
+    setFetching(true);
     setMessage('');
+    await onSend(message);
+    setFetching(false);
   };
 
   return (
@@ -58,7 +62,7 @@ const Input = ({ onSend }) => {
           />
         </Grid>
         <Grid item xs={2}>
-          <IconButton type="submit" color="primary">
+          <IconButton type="submit" color="primary" disabled={fetching}>
             <SendIcon />
           </IconButton>
         </Grid>
