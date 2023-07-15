@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 
 const Message = ({ message, sender }) => {
-  const isBot = sender === 'bot';
+  const isBot = sender === 'assistant';
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', alignSelf: isBot ? 'flex-start' : 'flex-start' }}>
