@@ -1,12 +1,13 @@
 import React from 'react';
-import { Typography, Box } from '@mui/material';
+import { Box, Typography, Avatar } from '@mui/material';
 
 const Message = ({ message, sender }) => {
+  const isBot = sender === 'bot';
+
   return (
-    <Box sx={{ alignSelf: sender === 'bot' ? 'flex-start' : 'flex-end' }}>
-      <Typography variant="body1" gutterBottom>
-        {message}
-      </Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', alignSelf: isBot ? 'flex-start' : 'flex-start' }}>
+      <Avatar>{isBot ? 'B' : 'U'}</Avatar>
+      <Typography variant="body1" sx={{ color: '#fff' }}>{message}</Typography>
     </Box>
   );
 };
