@@ -40,7 +40,7 @@ const App = () => {
       setChat((prevChat) => [...prevChat, { message: choices[0].message.content, sender: 'assistant' }]);
       
       // Check if the user won
-      if (botMessage.includes('you won')) {
+      if (response.includes('you won')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
