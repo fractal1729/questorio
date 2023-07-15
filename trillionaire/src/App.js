@@ -16,14 +16,13 @@ let configuration = new Configuration({
 });
 delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
-console.log(openai);
+console.log(process.env.REACT_APP_OPENAI_API_KEY);
 
 const App = () => {
   const [chat, setChat] = useState([]);
   const [numMessages, setNumMessages] = useState(0);
   const [won, setWon] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
 
   const handleSend = async (message) => {
     setChat([...chat, { message, sender: 'user' }]);
@@ -52,6 +51,7 @@ const App = () => {
       console.error(e);
     }
   };
+  console.log(chat);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', bgcolor: '#242525', height: '100%', width: '100%', position: 'absolute' }}>

@@ -47,7 +47,7 @@ const Input = ({ onSend }) => {
               }
             }}
             multiline 
-            rowsMax={4} 
+            maxRows={4}
             variant="outlined" 
             fullWidth 
             sx={{ 
