@@ -46,7 +46,7 @@ const App = () => {
       setNumMessages(numMessages + 1);
       
       // Check if the user won
-      if (gptMessage.toLowerCase().includes('you won') || gptMessage.toLowerCase().includes('you have won')) {
+      if (gptMessage.toLowerCase().includes('you won') || gptMessage.toLowerCase().includes("you've won") || gptMessage.toLowerCase().includes('you have won')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
@@ -68,7 +68,11 @@ const App = () => {
         <DialogTitle>Congratulations!</DialogTitle>
         <DialogContent>You won after {numMessages} messages!</DialogContent>
         <DialogActions>
-          <Button onClick={() => setWon(false)}>
+          <Button onClick={() => {
+            setWon(false);
+            setNumMessages(0);
+            setShowConfetti(false);
+          }}>
             Close
           </Button>
         </DialogActions>
