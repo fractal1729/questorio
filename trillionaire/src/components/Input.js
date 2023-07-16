@@ -59,6 +59,9 @@ const Input = ({ onSend }) => {
                 borderRadius: '15px',
               },
             }}
+            inputProps={{
+              maxLength: 50,
+            }}
             helperText={`${message.length}/50`}
             FormHelperTextProps={{ style: { color: message.length > 50 ? '#ff0000' : '#ffffff' } }}
             focused
