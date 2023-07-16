@@ -51,16 +51,24 @@ const Input = ({ onSend }) => {
             variant="outlined" 
             fullWidth 
             sx={{ 
-              color: '#fff', 
+              color: message.length > 50 ? '#ff0000' : '#ffffff',
               '& .MuiOutlinedInput-input': {
-                color: '#fff'
+                color: message.length > 50 ? '#ff0000' : '#ffffff',
               },
               '& .MuiOutlinedInput-root': {
                 borderRadius: '15px',
               },
             }}
+            inputProps={{
+              maxLength: 50,
+            }}
             helperText={`${message.length}/50`}
-            FormHelperTextProps={{ style: { color: message.length > 50 ? '#ff0000' : '#ffffff' } }}
+            FormHelperTextProps={{ style: { color: message.length >= 50 ? '#ff0000' : '#ffffff' } }}
+            InputProps={{
+              style: { 
+                color: message.length > 50 ? '#ff0000' : '#ffffff' 
+              }
+            }}
             focused
           />
         </Grid>
