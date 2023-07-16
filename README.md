@@ -1,4 +1,4 @@
-# trillionaire
+# Questorio
 
 1. `npm install`
 
