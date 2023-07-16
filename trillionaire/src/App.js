@@ -109,7 +109,7 @@ async function getCompletion(chat, actionSuccess) {
     temperature: 0.8,
   });
   const { choices } = response.data;
-  return choices[0].message.content.replace(/Game Master :/g, '');
+  return choices[0].message.content.replace(/Game Master:/g, '');
 }
 
 async function getLikelihood(chat) {
