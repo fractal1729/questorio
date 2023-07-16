@@ -19,6 +19,7 @@ let configuration = new Configuration({
 });
 delete configuration.baseOptions.headers['User-Agent'];
 const openai = new OpenAIApi(configuration);
+const DIFFICULTY = 1.3;
 
 const App = () => {
   const [chat, setChat] = useState([]);
@@ -54,9 +55,12 @@ const App = () => {
         setChat([...updatedChat, { message: likelihoodString, sender: 'assistant' }]);
         return;
       }
-      const probability = percentProbability ? (percentProbability / 100) ** 1.3 : 0;
-      const actionSuccess = Math.random() < probability;
-      console.log('RNG with probability ' + probability + ' resulted in ' + (actionSuccess ? 'success' : 'failure'));
+      const probability = percentProbability ? (percentProbability / 100) ** DIFFICULTY : 0;
+      const actionRoll = Math.round(20.5 - (20 * Math.random()));
+      const threshold = Math.round(20.5 - (probability * 20));
+      const actionSuccess = actionRoll >= threshold;
+      console.log('With difficulty mod of ' + DIFFICULTY + ', the required threshold is ' + threshold + '/20.');
+      console.log('Player rolled ' + actionRoll + '/20. ' + (actionSuccess ? 'Action succeeds!' : 'Action fails.'));
       const gptMessage = await getCompletion(updatedChat, actionSuccess);
       setChat([...updatedChat, { message: gptMessage, sender: 'assistant' }]);
       setValidChat([...validChat, { message: userMessage, sender: 'user' }, { message: gptMessage, sender: 'assistant' }]);
