@@ -35,8 +35,8 @@ const Input = ({ onSend }) => {
         bgcolor: '#242525'
       }}
     >
-      <Grid container spacing={1} alignItems="flex-end">
-        <Grid item xs={10}>
+      <Grid container spacing={1}>
+        <Grid item xs={11}>
           <TextField 
             value={message} 
             onChange={e => setMessage(e.target.value)} 
@@ -59,9 +59,12 @@ const Input = ({ onSend }) => {
                 borderRadius: '15px',
               },
             }}
+            helperText={`${message.length}/50`}
+            FormHelperTextProps={{ style: { color: message.length > 50 ? '#ff0000' : '#ffffff' } }}
+            focused
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={1}>
           <IconButton type="submit" color="primary" disabled={fetching}>
             <SendIcon />
           </IconButton>
