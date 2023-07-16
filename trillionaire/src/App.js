@@ -99,7 +99,7 @@ const App = () => {
 };
 
 async function getCompletion(chat, actionSuccess) {
-  const successMessage = actionSuccess ? '\n\nGame Master: This action SUCCEEDS.' : '\n\nGame Master: This action FAILS.';
+  const successMessage = actionSuccess ? '\n\nGame Master: This action SUCCEEDS.' : '\n\nGame Master: This action FAILS due to unforseen circumstances.';
   const doctoredChat = chat.map((message, index) => ({ role: message.sender, content: getMessagePrefix(message.sender) + message.message + (index === chat.length - 1 ? successMessage : '') }))
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
