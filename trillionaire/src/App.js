@@ -5,6 +5,9 @@ import { Box, Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+
 
 import Header from './components/Header';
 import Chatbox from './components/Chatbox';
@@ -64,6 +67,11 @@ const App = () => {
       <Dialog open={won}>
         <DialogTitle>Congratulations!</DialogTitle>
         <DialogContent>You won after {numMessages} messages!</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setWon(false)}>
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );
