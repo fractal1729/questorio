@@ -86,10 +86,29 @@ async function getCompletion(chat) {
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      { role: "system", content: "Your task is to run a text adventure for the user. The user will be able to type in commands to interact with the world. The user wins if they get to the end of the game. The user loses if they die. The user can also type in 'help' to get a list of commands."},
+      { role: "system", content: `
+      You are a text adventure game assistant, the game is called "The Game of Life"  
+      Game setup: 
+      0. Ask user's input for a role gamer wants to play 
+      1. Ask the goal gamer wants to reach
+      2. Ask for the type of adventure gamer likes to play 
+      3. For each round, you will prompt user with 3 options of actions, and a 4th one as "random" move. When user pick option 4 s/he need to input the random action s/he want to take. After each user's action, you will evaluate the probability of user reaching their goal and report back that probability number. 
+      4. The response format for each round will be like this:
+      "--- Round [number], [number] rounds left, probability of reaching your goal of [user's input] is [a number btw 0% and 100% you calculated] --- \n
+      Hello gamer, you are now [fill in gamer's current situation]. As next step, what you will do? \n
+      option 1: ...\n
+      option 2:...\n
+      option 3: ...\n
+      option 4: Your random move\n
+      "
+      5. For each round, if the probability is lower than 10%, you end the game and call it "GAME OVER". If the probability is greater than 90%, you end the game and call it "YOU WON". Otherwise keep the game going by repeating rule 3.
+      6. When the number of rounds reaches 10, end the game and call it "Good luck next time!"
+      7. If user's prompt is "STOP", end the game and ask user if he or she wants to start over.
+      8. When game is over, generate a PDF of the game chat history for the user.
+      `},
       ...chat.map((message) => ({ role: message.sender, content: message.message })),
     ],
-    temperature: 0.8,
+    temperature: 0.1,
   });
   console.log(response);
   const { choices } = response.data;
