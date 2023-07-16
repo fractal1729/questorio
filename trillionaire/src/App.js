@@ -54,8 +54,9 @@ const App = () => {
         setChat([...updatedChat, { message: likelihoodString, sender: 'assistant' }]);
         return;
       }
-      const actionSuccess = percentProbability ? Math.random() < percentProbability / 100 : 0;
-      console.log('RNG with probability ' + percentProbability / 100 + ' resulted in ' + (actionSuccess ? 'success' : 'failure'));
+      const probability = percentProbability ? (percentProbability / 100) ** 1.3 : 0;
+      const actionSuccess = Math.random() < probability;
+      console.log('RNG with probability ' + probability + ' resulted in ' + (actionSuccess ? 'success' : 'failure'));
       const gptMessage = await getCompletion(updatedChat, actionSuccess);
       setChat([...updatedChat, { message: gptMessage, sender: 'assistant' }]);
       setValidChat([...validChat, { message: userMessage, sender: 'user' }, { message: gptMessage, sender: 'assistant' }]);
