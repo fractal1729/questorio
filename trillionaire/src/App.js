@@ -49,13 +49,13 @@ const App = () => {
     }
     try {
       const likelihoodString = await getLikelihood([...validChat, { message: userMessage, sender: 'user' }]);
+      const percentProbability = Number(likelihoodString.match(/\d/g)?.join(''));
       if (likelihoodString.startsWith('Sorry, that action is invalid')) {
         setChat([...updatedChat, { message: likelihoodString, sender: 'assistant' }]);
         return;
       }
-      const probability = Number(likelihoodString.match(/\d/g).join('')) / 100;
-      const actionSuccess = Math.random() < probability;
-      console.log('RNG with probability ' + probability + ' resulted in ' + (actionSuccess ? 'success' : 'failure'));
+      const actionSuccess = percentProbability ? Math.random() < percentProbability / 100 : 0;
+      console.log('RNG with probability ' + percentProbability / 100 + ' resulted in ' + (actionSuccess ? 'success' : 'failure'));
       const gptMessage = await getCompletion(updatedChat, actionSuccess);
       setChat([...updatedChat, { message: gptMessage, sender: 'assistant' }]);
       setValidChat([...validChat, { message: userMessage, sender: 'user' }, { message: gptMessage, sender: 'assistant' }]);
@@ -103,7 +103,7 @@ async function getCompletion(chat, actionSuccess) {
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      { role: "system", content: "Your task is to run a text adventure for the user. The user will be able to type in commands to interact with the world. The user wins if they get to the end of the game. The user loses if they die. Every action the user takes must be valid based on the current state of the world. If the action is invalid or extremely unlikely, do not accept it and ask the user to provide a different action instead."},
+      { role: "system", content: "Your task is to run a text adventure for the player. The player will be able to type in any action that their character can take to interact with the world. The player wins if they get to the end of the game. The player loses if they die."},
       ...doctoredChat,
     ],
     temperature: 0.8,
@@ -117,7 +117,8 @@ async function getLikelihood(chat) {
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      { role: "system", content: "A player is playing a text adventure game in which they can type in short commands to interact with the world. You are given the full transcript of the game so far. Your task is to determine whether the player's most recent action is valid or not based on the current state of the world. If the action is valid, output how likely you think the action is to work, as a percentage probability from `0` to `100`. If the action is absurd, invalid, or highly unlikely to succeed, say `Sorry, that action is invalid`, and then explain why it is invalid."},
+      // { role: "system", content: "A player is playing a text adventure game in which they can type in short commands to interact with the world. You are given the full transcript of the game so far. Your task is to determine whether the player's most recent action is valid or not based on the current state of the world. If the action is valid, output how likely you think the action is to work, as a percentage probability from `0` to `100`. If the action is absurd or unrealistic, say `Sorry, that action is invalid`, and then explain why it is invalid. For example, an action that is valid but unsafe, such as jumping into an unknown body of water, could get a low success probability. An action that is very uncertain, e.g. if there is not information to determine the success probability, would get a low success probability but would still be valid. However only if an action is completely ridiculous and unrealistic, like magically obtaining superpowers out of nowhere, it should be invalid."},
+      { role: "system", content: "A player is playing a text adventure game in which they can type in short commands to interact with the world. You are given the full transcript of the game so far. Your task is to determine the likelihood of success of the player's action, outputting how likely you think the action is to work, as a percentage probability from `0` to `100`."},
       { role: "user", content: messageHistory }
     ],
     temperature: 0.9,
