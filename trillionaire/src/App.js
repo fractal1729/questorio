@@ -42,7 +42,7 @@ const App = () => {
   }, []);
 
   const handleSend = async (userMessage) => {
-    const updatedChat = [...chat, { message: userMessage, sender: 'user' }];
+    let updatedChat = [...chat, { message: userMessage, sender: 'user' }];
     setChat(updatedChat);
     if (userMessage.length > 50) {
       setChat([...updatedChat, { message: 'Sorry, that action is too long. Please keep your action to 50 characters or less.', sender: 'assistant' }]);
@@ -59,6 +59,8 @@ const App = () => {
       const actionRoll = Math.round(20.5 - (20 * Math.random()));
       const threshold = Math.round(20.5 - (probability * 20));
       const actionSuccess = actionRoll >= threshold;
+      updatedChat = [...updatedChat, { message: 'Roll ' + actionRoll + ' ' + (actionSuccess ? 'passed' : 'failed') + ' threshold of ' + threshold + '/20.', sender: 'assistant' }];
+      setChat(updatedChat);
       console.log('With difficulty mod of ' + DIFFICULTY + ', the required threshold is ' + threshold + '/20.');
       console.log('Player rolled ' + actionRoll + '/20. ' + (actionSuccess ? 'Action succeeds!' : 'Action fails.'));
       const gptMessage = await getCompletion(updatedChat, actionSuccess);
