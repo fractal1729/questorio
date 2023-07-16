@@ -50,16 +50,25 @@ const App = () => {
     }
     try {
       const likelihoodString = await getLikelihood([...validChat, { message: userMessage, sender: 'user' }]);
-      const percentProbability = Number(likelihoodString.match(/\d/g)?.join(''));
+      const match = likelihoodString.match(/\d+/);
+      console.log(match);
+      const percentProbability = match && match.length ? Number(match[0]) : 0;
       if (likelihoodString.startsWith('Sorry, that action is invalid')) {
         setChat([...updatedChat, { message: likelihoodString, sender: 'assistant' }]);
         return;
       }
+      console.log(percentProbability);
       const probability = percentProbability ? (percentProbability / 100) ** DIFFICULTY : 0;
+      console.log(probability);
       const actionRoll = Math.round(20.5 - (20 * Math.random()));
       const threshold = Math.round(20.5 - (probability * 20));
       const actionSuccess = actionRoll >= threshold;
-      updatedChat = [...updatedChat, { message: 'Roll ' + actionRoll + ' ' + (actionSuccess ? 'passed' : 'failed') + ' threshold of ' + threshold + '/20.', sender: 'assistant' }];
+      if (threshold === 21) {
+        updatedChat = [...updatedChat, { message: 'The D20 rolls with all its might, but alas it falls a bit short. Roll 1 ' + (actionSuccess ? 'passed' : 'failed') + ' threshold of 20/20.', sender: 'assistant' }];
+      }
+      else {
+        updatedChat = [...updatedChat, { message: 'Roll ' + actionRoll + ' ' + (actionSuccess ? 'passed' : 'failed') + ' threshold of ' + threshold + '/20.', sender: 'assistant' }];
+      }
       setChat(updatedChat);
       console.log('With difficulty mod of ' + DIFFICULTY + ', the required threshold is ' + threshold + '/20.');
       console.log('Player rolled ' + actionRoll + '/20. ' + (actionSuccess ? 'Action succeeds!' : 'Action fails.'));
