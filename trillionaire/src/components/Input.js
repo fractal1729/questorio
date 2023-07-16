@@ -51,9 +51,9 @@ const Input = ({ onSend }) => {
             variant="outlined" 
             fullWidth 
             sx={{ 
-              color: message.length >= 50 ? '#ff0000' : '#ffffff',
+              color: message.length > 50 ? '#ff0000' : '#ffffff',
               '& .MuiOutlinedInput-input': {
-                color: message.length >= 50 ? '#ff0000' : '#ffffff',
+                color: message.length > 50 ? '#ff0000' : '#ffffff',
               },
               '& .MuiOutlinedInput-root': {
                 borderRadius: '15px',
@@ -66,7 +66,7 @@ const Input = ({ onSend }) => {
             FormHelperTextProps={{ style: { color: message.length >= 50 ? '#ff0000' : '#ffffff' } }}
             InputProps={{
               style: { 
-                color: message.length >= 50 ? '#ff0000' : '#ffffff' 
+                color: message.length > 50 ? '#ff0000' : '#ffffff' 
               }
             }}
             focused
