@@ -103,7 +103,7 @@ async function getCompletion(chat, actionSuccess) {
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      { role: "system", content: "Your task is to run a text adventure for the player. The player will be able to type in any action that their character can take to interact with the world. The player wins if they get to the end of the game. The player loses if they die."},
+      { role: "system", content: "Your task is to run a text adventure for the player. The player will be able to type in any action that their character can take to interact with the world. The player wins if they get to the end of the game. The player loses if they die. Don't prescribe any possible moves; let the player figure it out on their own."},
       ...doctoredChat,
     ],
     temperature: 0.8,
