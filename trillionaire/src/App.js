@@ -5,6 +5,9 @@ import { Box, Divider } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+
 
 import Header from './components/Header';
 import Chatbox from './components/Chatbox';
@@ -59,7 +62,7 @@ const App = () => {
       setNumMessages(numMessages + 1);
       
       // Check if the user won
-      if (gptMessage.includes('you won')) {
+      if (gptMessage.toLowerCase().includes('you won') || gptMessage.toLowerCase().includes("you've won") || gptMessage.toLowerCase().includes('you have won') || gptMessage.toLowerCase().includes('Congratulations!')) {
         setWon(true);
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 2000); // Confetti for 2 seconds
@@ -80,6 +83,15 @@ const App = () => {
       <Dialog open={won}>
         <DialogTitle>Congratulations!</DialogTitle>
         <DialogContent>You won after {numMessages} messages!</DialogContent>
+        <DialogActions>
+          <Button onClick={() => {
+            setWon(false);
+            setNumMessages(0);
+            setShowConfetti(false);
+          }}>
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );
